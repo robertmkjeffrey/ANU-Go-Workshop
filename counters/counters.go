@@ -9,9 +9,9 @@ import (
 const DELAY time.Duration = 500 * time.Millisecond
 const TIMEOUT time.Duration = 500 * time.Millisecond
 
-func counter(target int, update_chan chan<- int) {
-	current_value := 50
+func counter(target int, update_chan chan<- int, count_viewer <-chan int) {
 	for {
+		current_value := <-count_viewer
 		if current_value < target {
 			update_chan <- 1
 		} else if current_value > target {
@@ -23,7 +23,7 @@ func counter(target int, update_chan chan<- int) {
 	}
 }
 
-func count_manager(update_chan <-chan int, result_chan chan<- int) {
+func count_manager(update_chan <-chan int, result_chan chan<- int, count_view chan<- int) {
 	var count int = 50
 
 	for {
@@ -36,6 +36,7 @@ func count_manager(update_chan <-chan int, result_chan chan<- int) {
 		case <-time.After(TIMEOUT):
 			result_chan <- count
 			return
+		case count_view <- count:
 		}
 	}
 }
@@ -46,11 +47,12 @@ func main() {
 	update_chan := make(chan int)
 
 	results := make(chan int)
-	go count_manager(update_chan, results)
+	count_viewer := make(chan int)
+	go count_manager(update_chan, results, count_viewer)
 
 	// Helper function for creating counters.
 	create_counter := func(target int) {
-		go counter(target, update_chan)
+		go counter(target, update_chan, count_viewer)
 	}
 
 	create_counter(30)
