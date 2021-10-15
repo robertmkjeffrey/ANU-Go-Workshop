@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 )
 
 func delay_print(message string) {
 	time.Sleep(1 * time.Second)
-	fmt.Println(message)
+	log.Println(message)
 }
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 
 	delay_print("Sequentially, the main function waits for us to finish...")
 	go delay_print("Did you see me?")
-	fmt.Println("...but it might not concurrently.")
-	fmt.Println("Unlike tasks in Ada, goroutines halt when their parent goroutine returns.")
-	fmt.Println("How can you ensure the concurrent print gets to finish?")
+	log.Println("...but it might not concurrently.")
+	log.Println("Unlike tasks in Ada, goroutines halt when their parent goroutine returns.")
+	log.Println("How can you ensure the concurrent print gets to finish?")
 }
