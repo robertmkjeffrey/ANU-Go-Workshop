@@ -4,7 +4,7 @@
 
 Welcome! This workshop is a brief introduction to Go, intended at students studying COMP2310. It expects the reader has gone through the [Tour of Go](https://tour.golang.org/).
 
-Go (sometimes referred to as Golang) is a concurrent programming language designed for simple, efficent, and safe software.
+Go (sometimes referred to as Golang) is a concurrent programming language designed for simple, efficient, and safe software.
 
 Go uses C-style syntax, similar to many languages you may be familiar with.
 
@@ -44,7 +44,7 @@ go g()
 h()   g()
 ```
 
-Importantly, there are no guarentees as to *when* `g` is run. This is important to consider when writing code. For example:
+Importantly, there are no guarantees as to *when* `g` is run. This is important to consider when writing code. For example:
 
 ```go
 func test() {
@@ -81,5 +81,13 @@ Finally, we need to run this! `cd` into `hello_world` and the file:
 $ go run hello_world.go
 Hello world!
 ```
+
+## Harder problems.
+
+From here, we'll swap to live teaching. This repo contains a number of practice exercises of varying difficulty and topic. Feel free to choose one that looks interesting, and give it a shot!
+
+In approximately increasing level of difficulty:
+* [`waiting`](waiting/waiting.go) [!] - use WaitGroups to let the main process wait for a child thread to complete.
+*  [`token_ring`](token_ring/token_ring.go) [!!!] - finish an implementation of a token ring. This has an easy solution and a high efficiency solution.
 
 &copy;Robert Jeffrey, 2021
