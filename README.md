@@ -1,6 +1,6 @@
 # (Unofficial) ANU Golang Workshop
 
-A workshop run at the Australian National University, designed for second-year computer science students. This covers some high-level ideas in Go, and provides some exercises to work on.
+A workshop run at the Australian National University, designed for second-year computer science students. This covers some high-level ideas in Go (primarily focused on concurrency), and provides some exercises to work on. It assumes the reader has gone through the [Tour of Go](https://tour.golang.org/).
 
 ## Setup
 
