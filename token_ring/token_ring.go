@@ -10,11 +10,21 @@ const TOTAL_NODES int = 5
 
 type token int
 
+func sendToken(t token, out chan<- token) {
+	// TODO: Do something with this.
+	go func() {
+		out <- t
+	}()
+}
+
 func token_node(id int, in <-chan token, out chan<- token, wg *sync.WaitGroup) {
+
+	defer wg.Done()
 
 	var currentLeader token = token(id)
 
 	// TODO - send your token (currentLeader) to initiate an election bid.
+	sendToken(currentLeader, out)
 
 	for {
 		recieved_token := <-in
@@ -22,18 +32,18 @@ func token_node(id int, in <-chan token, out chan<- token, wg *sync.WaitGroup) {
 		if recieved_token > currentLeader {
 			currentLeader = recieved_token
 			// TODO - forward token to share election bid.
-
+			sendToken(recieved_token, out)
 		} else if recieved_token == token(id) {
 			log.Printf("Node [%d] claims victory!\n", id)
 			// TODO - send token to claim victory.
-
+			sendToken(recieved_token, out)
 			// Recieve your own token and then shut down.
 			<-in
 			return
 		} else if recieved_token == currentLeader {
 			log.Printf("Node [%d] acknowledges node [%d] as leader.", id, currentLeader)
 			// TODO - send token to share victory message.
-
+			sendToken(recieved_token, out)
 			return
 		}
 
@@ -42,6 +52,8 @@ func token_node(id int, in <-chan token, out chan<- token, wg *sync.WaitGroup) {
 }
 
 func main() {
+
+	var wg sync.WaitGroup
 
 	// Create a slice (list) of token channels with inital length TOTAL_NODES.
 	channels := make([](chan token), TOTAL_NODES)
@@ -67,11 +79,12 @@ func main() {
 		}
 
 		// TODO: create each node here.
-
+		wg.Add(1)
+		go token_node(id, last_node, next_node, &wg)
 	}
 
 	// TODO: This currently blocks infinitely.
 	// Find a way to wait until the token election is complete and then halt.
-	select {}
+	wg.Wait()
 	fmt.Println("Shutdown.")
 }
