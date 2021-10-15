@@ -19,6 +19,13 @@
             "program": "waiting/waiting.go"
         }, 
         {
+            "name": "counters",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "counters/counters.go"
+        }, 
+        {
             "name": "token_ring",
             "type": "go",
             "request": "launch",
